@@ -16,6 +16,7 @@ $('#player2').html(toinsert2);
 
 //przycisk zmiany rundy
 $('#btn').on('click', function() { changePlayer(curplayer); });
+$('.footer').html("Paweł Michalski 4K");
 
 //klianie w pola
 tiles--;
@@ -40,6 +41,43 @@ function addHandler(tile, mode, player) {
         $('#' + player + 'T' + tile).unbind('click');
         //console.log("usuwanie eventow dla: ",player);
     }
+}
+
+/*
+function randomBoard() {
+    var tiles_nr = 99;
+    var czteromasztowiec = 1;
+    var trojmasztowiec = 2;
+    var dwumasztowiec = 3;
+    var jednomasztowiec = 4;
+
+    while (czteromasztowiec < 0) {
+        var num_1 = getrandomlayout(0, 99);
+        var dir = getrandomlayout(0, 3);
+        switch (dir) {
+            case 0:
+                //w prawo
+                var num_2 = num_1 + 1;
+                break;
+            case 1:
+                //w dol
+                var num_2 
+                break;
+            case 2:
+                //w lewo
+                break;
+            case 3:
+                //w gore
+                break;
+        }
+        czteromasztowiec--;
+    }
+}
+*/
+
+//losowanie liczby
+function getrandomlayout(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
 //game vars
@@ -73,6 +111,66 @@ var layouts = [
         [94, 95, 96], //8 trojmasztowce
 
         [52, 52, 54, 55] //9 czteromasztowce
+    ],
+    [
+        [1],
+        [62],
+        [37],
+        [6], //3 jednomasztowce
+
+        [48, 49],
+        [30, 40],
+        [98, 99], //6 dwumasztowce
+
+        [60, 70, 80],
+        [24, 34, 44], //8 trojmasztowce
+
+        [74, 75, 76, 77] //9 czteromasztowce
+    ],
+    [
+        [53],
+        [13],
+        [36],
+        [77], //3 jednomasztowce
+
+        [29, 39],
+        [21, 31],
+        [15, 16], //6 dwumasztowce
+
+        [83, 84, 85],
+        [61, 71, 81], //8 trojmasztowce
+
+        [55, 56, 57, 58] //9 czteromasztowce
+    ],
+    [
+        [7],
+        [4],
+        [82],
+        [52], //3 jednomasztowce
+
+        [55, 56],
+        [24, 34],
+        [21, 31], //6 dwumasztowce
+
+        [74, 75, 76],
+        [36, 37, 38], //8 trojmasztowce
+
+        [58, 56, 57, 58] //9 czteromasztowce
+    ],
+    [
+        [70],
+        [43],
+        [47],
+        [27], //3 jednomasztowce
+
+        [78, 87],
+        [23, 24],
+        [3, 4], //6 dwumasztowce
+
+        [94, 95, 96],
+        [30, 40, 50], //8 trojmasztowce
+
+        [72, 73, 74, 75] //9 czteromasztowce
     ]
 ];
 var n; //licznik do ilosci statkow
@@ -80,8 +178,8 @@ var p1startFresh = true; //nowa gra gracz I
 var p2startFresh = true; //nowa gra gracz II
 var start; //poczatek statku
 var stop; //koniec statku
-var layoutnumber_p1 = getrandomlayout(0, 1); //wybor planszy p1
-var layoutnumber_p2 = getrandomlayout(0, 1); //wybor planszy p2
+var layoutnumber_p1 = getrandomlayout(0, layouts.length - 1); //wybor planszy p1
+var layoutnumber_p2 = getrandomlayout(0, layouts.length - 1); //wybor planszy p2
 console.log("layout number p1: " + layoutnumber_p1);
 console.log("layout number p2: " + layoutnumber_p2);
 var p1Ships = []; //zapisane statki I gracza
@@ -93,6 +191,7 @@ var p2ShipsToAdd = [];
 var shotDone = false;
 var p1Score = 0;
 var p2Score = 0;
+var gameover = false;
 
 //init statkow dla I gracza
 showShips(curplayer);
@@ -172,11 +271,6 @@ console.log("p2Ships:", p2Ships);
 
 //fnc
 
-//losowanie liczby int
-function getrandomlayout(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
 //zmiana gracza
 function changePlayer(player) {
     var notifi;
@@ -255,27 +349,7 @@ function showShips(player) {
         }
 
         setShip(shipToShow, player, n);
-        /*
-        if (player == 1) {
-            p1ships_local2.push(shipToShow);
-            //console.log("p1ShipsLocal przy rysowaniu: ", p1ships_local2);
-        } else {
-            p2ships_local2.push(shipToShow);
-            //console.log("p2ShipsLocal przy rysowaniu: ", p2ships_local2);
-        }
-        */
     }
-    /*
-    if (player == 1) {
-        p1Ships = p1ships_local2;
-        console.log("p1Ships przy rysowaniu: ", p1Ships);
-    } else {
-        p2Ships = p2ships_local2;
-        console.log("p2Ships przy rysowaniu: ", p2Ships);
-    }
-    */
-
-
 }
 
 //ukrywanie statkow
@@ -288,67 +362,10 @@ function hideShips(player) {
     } else {
         number = layoutnumber_p2;
     }
-    /*
-    if(player==1) {
-        p1startFresh = false;
-        console.log("p1startFresh "+p1startFresh);
-    } else {
-        p2startFresh = false;
-        console.log("p2startFresh "+p2startFresh);
-    }
-    */
     for (n = 0; n <= 9; n++) {
-        /*
-        var s_1;
-        var s_2;
-        var s_3;
-        var s_4;
-        //shipToHide = [];
-        switch (layouts[number][n].length) {
-            case 1:
-                s_1 = layouts[number][n][0];
-                shipToHide.push(s_1);
-                break;
-            case 2:
-                s_1 = layouts[number][n][0];
-                s_2 = layouts[number][n][1];
-                shipToHide.push(s_1, s_2);
-                break;
-            case 3:
-                s_1 = layouts[number][n][0];
-                s_2 = layouts[number][n][1];
-                s_3 = layouts[number][n][2];
-                shipToHide.push(s_1, s_2, s_3);
-                break;
-            case 4:
-                s_1 = layouts[number][n][0];
-                s_2 = layouts[number][n][1];
-                s_3 = layouts[number][n][2];
-                s_4 = layouts[number][n][3];
-                shipToHide.push(s_1, s_2, s_3, s_4);
-                break;
-        }
-        //console.log(ship);
-        if (player == 1) {
-            p1ships_local.push(shipToHide);
-        } else {
-            p2ships_local.push(shipToHide);
-        }
-
-        */
         $('.tile-ship').addClass('tile');
         $('.tile-ship').removeClass('tile-ship');
     }
-    /*
-    if (player == 1) {
-        p1Ships = p1ships_local;
-    } else {
-        p2Ships = p2ships_local;
-    }
-    //console.log("p1ships_local:",p1ships_local);
-    console.log("p1ships przy schowaniu:", p1Ships);
-    console.log("p2ships przy schowaniu:", p2Ships);
-    */
 }
 
 
@@ -358,73 +375,11 @@ function setShip(ship, player, ship_nr) {
         $('#' + player + 'T' + value).addClass('tile-ship');
         $('#' + player + 'T' + value).removeClass('tile');
     });
-    /*
-    console.log("statek: od " + start + " do " + stop);
-    $('#' + player + 'T' + start).addClass('tile-ship');
-    $('#' + player + 'T' + start).removeClass('tile');
-    $('#' + player + 'T' + stop).addClass('tile-ship');
-    $('#' + player + 'T' + stop).removeClass('tile');
-    shipToShow = [];
-
-    shipToShow.push(start);
-    shipToShow.push(stop);
-
-
-    if (stop - start > 0) { //statek wiekszy do 2
-        var tochange = start + (stop - start) - 1;
-        var roznica = (stop - start);
-
-        switch (roznica) {
-            case 2: //kolorowanie jednego pola w poziomie - statek na 3
-                $('#' + player + 'T' + tochange).addClass('tile-ship');
-                $('#' + player + 'T' + tochange).removeClass('tile');
-                console.log("roznica 2: " + tochange);
-                shipToShow.push(tochange);
-                break;
-            case 3: //kolorowanie dwoch pol w poziomie statek na 4
-                var lessTochange = tochange - 1;
-                $('#' + player + 'T' + tochange).addClass('tile-ship');
-                $('#' + player + 'T' + tochange).removeClass('tile');
-                $('#' + player + 'T' + lessTochange).addClass('tile-ship');
-                $('#' + player + 'T' + lessTochange).removeClass('tile');
-                var test = tochange - 1;
-                console.log("roznica 3: " + test);
-                shipToShow.push(tochange);
-                shipToShow.push(lessTochange);
-                break;
-        } //57start 27stop
-    } else if (stop - start < 0) {
-        var tochange = start + (stop - start) + 10; //37
-        var roznica = (stop - start); //-30
-
-        switch (roznica) {
-            case (-20): //kolorowanie jednego pola w pionie
-                $('#' + player + 'T' + tochange).addClass('tile-ship');
-                $('#' + player + 'T' + tochange).removeClass('tile');
-                console.log("roznica -20: " + tochange);
-                shipToShow.push(tochange);
-                break;
-            case (-30): //kolorowanie dwoch pol w pionie
-                var lessTochange = tochange + 10;
-                $('#' + player + 'T' + tochange).addClass('tile-ship');
-                $('#' + player + 'T' + tochange).removeClass('tile');
-                $('#' + player + 'T' + lessTochange).addClass('tile-ship');
-                $('#' + player + 'T' + lessTochange).removeClass('tile');
-                var test = tochange - 1;
-                console.log("roznica -30: " + test);
-                shipToShow.push(tochange);
-                shipToShow.push(lessTochange);
-                break;
-        }
-    }
-    console.log("shipToShow: ", shipToShow);
-    return shipToShow;
-    */
 }
 
 //dodawanie strzalu
 function shot(player, tile) {
-    if (!shotDone) {
+    if (!shotDone && !gameover) {
         if (player == 1) {
             //var tileid = '#2T' + tile;
             var ships = p2Ships;
@@ -441,41 +396,25 @@ function shot(player, tile) {
             check = $.inArray(tile, p2Ships);
             console.log("check var: ", check);
             setColor(player, tile, check);
+            if (check != -1) {
+                p1Score++;
+                console.log("p1 PLUS 1", p1Score);
+                if (p1Score >= 20) {
+                    win(player);
+                }
+            }
         } else {
             check = $.inArray(tile, p1Ships);
             console.log("check var: ", check);
             setColor(player, tile, check);
-        }
-
-        /*
-        $.each(ships, function(index, value) {
-            //value = [start,stop];
-            if (player == 1) {
-                //console.log("test", p1Shots.indexOf(value));
-                //console.log("value test", value);
-                //console.log("tile test", tile);
-                check = $.inArray(value, p1Shots);
-
-                //check = p1Shots.indexOf(value) != -1;
-                //console.log("check ", check);
-                //console.log("check ", check != -1);
-                console.log("Cords: ", value, tile);
-                setColor(player, tile, check);
-            } else {
-                //console.log("test", p2Shots.indexOf(value));
-                //console.log("value test", value);
-                //console.log("tile test", tile);
-                check = $.inArray(value, p2Shots);
-
-                //check = p2Shots.indexOf(value) != -1;
-                //console.log("check ", check);
-                //console.log("check ", check != -1);
-                console.log("Cords: ", value, tile);
-                setColor(player, tile, check);
+            if (check != -1) {
+                p2Score++;
+                console.log("p2 PLUS 1", p2Score)
+                if (p2Score >= 20) {
+                    win(player);
+                }
             }
-        });
-        */
-
+        }
     }
 }
 
@@ -535,4 +474,17 @@ function setShots(player) {
         console.log("ich strzaly: " + value);
         $('#' + player + 'T' + value).css('background-color', 'black');
     })
+}
+
+//wygrana
+function win(player) {
+    gameover = true; //flaga
+    $('#btn').unbind('click');
+    //powiadomienie
+    if (player == 1) {
+        var player_str = "I";
+    } else {
+        var player_str = "II";
+    }
+    $('.notifi').html("Wygrał gracz" + player_str);
 }
