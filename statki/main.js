@@ -30,7 +30,10 @@ while (tiles >= 0) {
 function addHandler(tile, mode, player) {
     if (mode == 1) {
         //dodwanie
-        $('#' + player + 'T' + tile).click(function() { shot(curplayer, tile) });
+        $('#' + player + 'T' + tile).click(function() {
+            shot(curplayer, tile);
+            shotDone = true;
+        });
         //console.log("dodwanie eventow dla: ",player);
     } else {
         //usuwanie
@@ -42,34 +45,34 @@ function addHandler(tile, mode, player) {
 //game vars
 var layouts = [
     [
-        [31, 31],
-        [71, 71],
-        [16, 16],
-        [76, 76], //3
+        [31],
+        [71],
+        [16],
+        [76], //3 jednomasztowce
 
         [11, 12],
         [34, 24],
-        [69, 59], //6
+        [69, 59], //6 dwumasztowce
 
-        [47, 27],
-        [93, 95], //8
+        [27, 37, 47],
+        [93, 94, 95], //8 trojmasztowce
 
-        [51, 54] //9
+        [51, 52, 53, 54] //9 czteromasztowce
     ],
     [
-        [32, 32],
-        [73, 73],
-        [17, 17],
-        [78, 78], //3
+        [32],
+        [73],
+        [17],
+        [78], //3 jednomasztowce
 
         [12, 13],
         [35, 25],
-        [70, 80], //6
+        [70, 80], //6 dwumasztowce
 
-        [58, 38],
-        [94, 96], //8
+        [58, 48, 38],
+        [94, 95, 96], //8 trojmasztowce
 
-        [52, 55] //9
+        [52, 52, 54, 55] //9 czteromasztowce
     ]
 ];
 var n; //licznik do ilosci statkow
@@ -85,10 +88,82 @@ var p1Ships = []; //zapisane statki I gracza
 var p1Shots = []; //zapisane strzaly I gracza
 var p2Ships = []; //zapisane statki II gracza
 var p2Shots = []; //zapisane strzaly II gracza
+var p1ShipsToAdd = [];
+var p2ShipsToAdd = [];
+var shotDone = false;
 
 //init statkow dla I gracza
 showShips(curplayer);
 
+//dodawanie statkow p1
+for (n = 0; n <= 9; n++) {
+    var s_1;
+    var s_2;
+    var s_3;
+    var s_4;
+    console.log(n, layouts[layoutnumber_p1][n].length);
+    switch (layouts[layoutnumber_p1][n].length) {
+        case 1:
+            s_1 = layouts[layoutnumber_p1][n][0];
+            p1ShipsToAdd.push(s_1);
+            break;
+        case 2:
+            s_1 = layouts[layoutnumber_p1][n][0];
+            s_2 = layouts[layoutnumber_p1][n][1];
+            p1ShipsToAdd.push(s_1, s_2);
+            break;
+        case 3:
+            s_1 = layouts[layoutnumber_p1][n][0];
+            s_2 = layouts[layoutnumber_p1][n][1];
+            s_3 = layouts[layoutnumber_p1][n][2];
+            p1ShipsToAdd.push(s_1, s_2, s_3);
+            break;
+        case 4:
+            s_1 = layouts[layoutnumber_p1][n][0];
+            s_2 = layouts[layoutnumber_p1][n][1];
+            s_3 = layouts[layoutnumber_p1][n][2];
+            s_4 = layouts[layoutnumber_p1][n][3];
+            p1ShipsToAdd.push(s_1, s_2, s_3, s_4);
+            break;
+    }
+    console.log(p1ShipsToAdd);
+}
+p1Ships = p1ShipsToAdd;
+
+//dodawanie statkow p2
+for (n = 0; n <= 9; n++) {
+    var s_1;
+    var s_2;
+    var s_3;
+    var s_4;
+    console.log(n, layouts[layoutnumber_p2][n].length);
+    switch (layouts[layoutnumber_p2][n].length) {
+        case 1:
+            s_1 = layouts[layoutnumber_p2][n][0];
+            p2ShipsToAdd.push(s_1);
+            break;
+        case 2:
+            s_1 = layouts[layoutnumber_p2][n][0];
+            s_2 = layouts[layoutnumber_p2][n][1];
+            p2ShipsToAdd.push(s_1, s_2);
+            break;
+        case 3:
+            s_1 = layouts[layoutnumber_p2][n][0];
+            s_2 = layouts[layoutnumber_p2][n][1];
+            s_3 = layouts[layoutnumber_p2][n][2];
+            p2ShipsToAdd.push(s_1, s_2, s_3);
+            break;
+        case 4:
+            s_1 = layouts[layoutnumber_p2][n][0];
+            s_2 = layouts[layoutnumber_p2][n][1];
+            s_3 = layouts[layoutnumber_p2][n][2];
+            s_4 = layouts[layoutnumber_p2][n][3];
+            p2ShipsToAdd.push(s_1, s_2, s_3, s_4);
+            break;
+    }
+    console.log(p2ShipsToAdd);
+}
+p2Ships = p2ShipsToAdd;
 
 
 //fnc
@@ -125,7 +200,7 @@ function changePlayer(player) {
         showShips(curplayer);
         setShots(curplayer);
     }
-
+    shotDone = false;
     $('.notifi').html(notifi);
 }
 
@@ -133,6 +208,7 @@ function changePlayer(player) {
 function showShips(player) {
     var p1ships_local2 = [];
     var p2ships_local2 = [];
+    var shipToShow = [];
     if (player == 1) {
         number = layoutnumber_p1;
         //p1Ships.push(layouts[number]);
@@ -141,9 +217,36 @@ function showShips(player) {
         //p2Ships.push(layouts[number]);
     }
     for (n = 0; n <= 9; n++) {
-        start = layouts[number][n][0];
-        stop = layouts[number][n][1];
-        setShip(start, stop, player, n);
+        var s_1;
+        var s_2;
+        var s_3;
+        var s_4;
+        shipToShow = [];
+        switch (layouts[number][n].length) {
+            case 1:
+                s_1 = layouts[number][n][0];
+                shipToShow.push(s_1);
+                break;
+            case 2:
+                s_1 = layouts[number][n][0];
+                s_2 = layouts[number][n][1];
+                shipToShow.push(s_1, s_2);
+                break;
+            case 3:
+                s_1 = layouts[number][n][0];
+                s_2 = layouts[number][n][1];
+                s_3 = layouts[number][n][2];
+                shipToShow.push(s_1, s_2, s_3);
+                break;
+            case 4:
+                s_1 = layouts[number][n][0];
+                s_2 = layouts[number][n][1];
+                s_3 = layouts[number][n][2];
+                s_4 = layouts[number][n][3];
+                shipToShow.push(s_1, s_2, s_3, s_4);
+                break;
+        }
+        setShip(shipToShow, player, n);
         if (player == 1) {
             p1ships_local2.push(shipToShow);
             //console.log("p1ShipsLocal przy rysowaniu: ", p1ships_local2);
@@ -165,12 +268,9 @@ function showShips(player) {
 
 //ukrywanie statkow
 function hideShips(player) {
-    var ship = [];
+    var shipToHide = [];
     var p1ships_local = [];
     var p2ships_local = [];
-    var s_start;
-    var s_stop;
-    var s_status;
     if (player == 1) {
         number = layoutnumber_p1;
     } else {
@@ -186,16 +286,40 @@ function hideShips(player) {
     }
     */
     for (n = 0; n <= 9; n++) {
-        s_start = layouts[number][n][0];
-        s_stop = layouts[number][n][1];
-        //ship = [poczatek,koniec];
-        ship = [];
-        ship.push(s_start, s_stop);
+        var s_1;
+        var s_2;
+        var s_3;
+        var s_4;
+        shipToHide = [];
+        switch (layouts[number][n].length) {
+            case 1:
+                s_1 = layouts[number][n][0];
+                shipToHide.push(s_1);
+                break;
+            case 2:
+                s_1 = layouts[number][n][0];
+                s_2 = layouts[number][n][1];
+                shipToHide.push(s_1, s_2);
+                break;
+            case 3:
+                s_1 = layouts[number][n][0];
+                s_2 = layouts[number][n][1];
+                s_3 = layouts[number][n][2];
+                shipToHide.push(s_1, s_2, s_3);
+                break;
+            case 4:
+                s_1 = layouts[number][n][0];
+                s_2 = layouts[number][n][1];
+                s_3 = layouts[number][n][2];
+                s_4 = layouts[number][n][3];
+                shipToHide.push(s_1, s_2, s_3, s_4);
+                break;
+        }
         //console.log(ship);
         if (player == 1) {
-            p1ships_local.push(ship);
+            p1ships_local.push(shipToHide);
         } else {
-            p2ships_local.push(ship);
+            p2ships_local.push(shipToHide);
         }
 
 
@@ -214,8 +338,12 @@ function hideShips(player) {
 
 
 //ustawianie statkow
-function setShip(start, stop, player, ship_nr) {
-
+function setShip(ship, player, ship_nr) {
+    $.each(ship, function(index, value) {
+        $('#' + player + 'T' + value).addClass('tile-ship');
+        $('#' + player + 'T' + value).removeClass('tile');
+    });
+    /*
     console.log("statek: od " + start + " do " + stop);
     $('#' + player + 'T' + start).addClass('tile-ship');
     $('#' + player + 'T' + start).removeClass('tile');
@@ -276,37 +404,34 @@ function setShip(start, stop, player, ship_nr) {
     }
     console.log("shipToShow: ", shipToShow);
     return shipToShow;
+    */
 }
 
 //dodawanie strzalu
 function shot(player, tile) {
-    if (player == 1) {
-        var tileid = '#2T' + tile;
-        var ships = p2Ships;
-        p1Shots.push(tile);
-        //alert(tile);
-    } else {
-        var tileid = '#1T' + tile;
-        var ships = p1Ships;
-        p2Shots.push(tile);
-        //alert(tile);
-    }
-
-    $.each(ships, function(index, value) {
-        //value = [start,stop];
+    if (!shotDone) {
         if (player == 1) {
-            if (p2Ships.indexOf(value) > -1) {
-                alert("trafiles przeciwnika");
-            } else {
-                alert("pudło");
-            }
+            var tileid = '#2T' + tile;
+            var ships = p2Ships;
+            p1Shots.push(tile);
+            //alert(tile);
         } else {
-
+            var tileid = '#1T' + tile;
+            var ships = p1Ships;
+            p2Shots.push(tile);
+            //alert(tile);
         }
-    });
-    $(tileid).css('background-color', 'gray');
 
+        $.each(ships, function(index, value) {
+            //value = [start,stop];
+            if (player == 1) {
 
+            } else {
+
+            }
+        });
+        $(tileid).css('background-color', 'gray');
+    }
 }
 
 //setShots
