@@ -91,6 +91,8 @@ var p2Shots = []; //zapisane strzaly II gracza
 var p1ShipsToAdd = [];
 var p2ShipsToAdd = [];
 var shotDone = false;
+var p1Score = 0;
+var p2Score = 0;
 
 //init statkow dla I gracza
 showShips(curplayer);
@@ -101,7 +103,7 @@ for (n = 0; n <= 9; n++) {
     var s_2;
     var s_3;
     var s_4;
-    console.log(n, layouts[layoutnumber_p1][n].length);
+    //console.log(n, layouts[layoutnumber_p1][n].length);
     switch (layouts[layoutnumber_p1][n].length) {
         case 1:
             s_1 = layouts[layoutnumber_p1][n][0];
@@ -126,9 +128,10 @@ for (n = 0; n <= 9; n++) {
             p1ShipsToAdd.push(s_1, s_2, s_3, s_4);
             break;
     }
-    console.log(p1ShipsToAdd);
+    //console.log(p1ShipsToAdd);
 }
 p1Ships = p1ShipsToAdd;
+console.log("p1Ships:", p1Ships);
 
 //dodawanie statkow p2
 for (n = 0; n <= 9; n++) {
@@ -136,7 +139,7 @@ for (n = 0; n <= 9; n++) {
     var s_2;
     var s_3;
     var s_4;
-    console.log(n, layouts[layoutnumber_p2][n].length);
+    //console.log(n, layouts[layoutnumber_p2][n].length);
     switch (layouts[layoutnumber_p2][n].length) {
         case 1:
             s_1 = layouts[layoutnumber_p2][n][0];
@@ -161,9 +164,10 @@ for (n = 0; n <= 9; n++) {
             p2ShipsToAdd.push(s_1, s_2, s_3, s_4);
             break;
     }
-    console.log(p2ShipsToAdd);
+    //console.log(p2ShipsToAdd);
 }
 p2Ships = p2ShipsToAdd;
+console.log("p2Ships:", p2Ships);
 
 
 //fnc
@@ -206,8 +210,10 @@ function changePlayer(player) {
 
 //pokazywanie statkow
 function showShips(player) {
+    /*
     var p1ships_local2 = [];
     var p2ships_local2 = [];
+    */
     var shipToShow = [];
     if (player == 1) {
         number = layoutnumber_p1;
@@ -217,6 +223,7 @@ function showShips(player) {
         //p2Ships.push(layouts[number]);
     }
     for (n = 0; n <= 9; n++) {
+
         var s_1;
         var s_2;
         var s_3;
@@ -246,7 +253,9 @@ function showShips(player) {
                 shipToShow.push(s_1, s_2, s_3, s_4);
                 break;
         }
+
         setShip(shipToShow, player, n);
+        /*
         if (player == 1) {
             p1ships_local2.push(shipToShow);
             //console.log("p1ShipsLocal przy rysowaniu: ", p1ships_local2);
@@ -254,7 +263,9 @@ function showShips(player) {
             p2ships_local2.push(shipToShow);
             //console.log("p2ShipsLocal przy rysowaniu: ", p2ships_local2);
         }
+        */
     }
+    /*
     if (player == 1) {
         p1Ships = p1ships_local2;
         console.log("p1Ships przy rysowaniu: ", p1Ships);
@@ -262,6 +273,7 @@ function showShips(player) {
         p2Ships = p2ships_local2;
         console.log("p2Ships przy rysowaniu: ", p2Ships);
     }
+    */
 
 
 }
@@ -286,11 +298,12 @@ function hideShips(player) {
     }
     */
     for (n = 0; n <= 9; n++) {
+        /*
         var s_1;
         var s_2;
         var s_3;
         var s_4;
-        shipToHide = [];
+        //shipToHide = [];
         switch (layouts[number][n].length) {
             case 1:
                 s_1 = layouts[number][n][0];
@@ -322,10 +335,11 @@ function hideShips(player) {
             p2ships_local.push(shipToHide);
         }
 
-
+        */
         $('.tile-ship').addClass('tile');
         $('.tile-ship').removeClass('tile-ship');
     }
+    /*
     if (player == 1) {
         p1Ships = p1ships_local;
     } else {
@@ -334,6 +348,7 @@ function hideShips(player) {
     //console.log("p1ships_local:",p1ships_local);
     console.log("p1ships przy schowaniu:", p1Ships);
     console.log("p2ships przy schowaniu:", p2Ships);
+    */
 }
 
 
@@ -411,26 +426,82 @@ function setShip(ship, player, ship_nr) {
 function shot(player, tile) {
     if (!shotDone) {
         if (player == 1) {
-            var tileid = '#2T' + tile;
+            //var tileid = '#2T' + tile;
             var ships = p2Ships;
             p1Shots.push(tile);
             //alert(tile);
         } else {
-            var tileid = '#1T' + tile;
+            //var tileid = '#1T' + tile;
             var ships = p1Ships;
             p2Shots.push(tile);
             //alert(tile);
         }
 
+        if (player == 1) {
+            check = $.inArray(tile, p2Ships);
+            console.log("check var: ", check);
+            setColor(player, tile, check);
+        } else {
+            check = $.inArray(tile, p1Ships);
+            console.log("check var: ", check);
+            setColor(player, tile, check);
+        }
+
+        /*
         $.each(ships, function(index, value) {
             //value = [start,stop];
             if (player == 1) {
+                //console.log("test", p1Shots.indexOf(value));
+                //console.log("value test", value);
+                //console.log("tile test", tile);
+                check = $.inArray(value, p1Shots);
 
+                //check = p1Shots.indexOf(value) != -1;
+                //console.log("check ", check);
+                //console.log("check ", check != -1);
+                console.log("Cords: ", value, tile);
+                setColor(player, tile, check);
             } else {
+                //console.log("test", p2Shots.indexOf(value));
+                //console.log("value test", value);
+                //console.log("tile test", tile);
+                check = $.inArray(value, p2Shots);
 
+                //check = p2Shots.indexOf(value) != -1;
+                //console.log("check ", check);
+                //console.log("check ", check != -1);
+                console.log("Cords: ", value, tile);
+                setColor(player, tile, check);
             }
         });
-        $(tileid).css('background-color', 'gray');
+        */
+
+    }
+}
+
+//kolorowanie po strzale...
+function setColor(player, tileNr, hit) {
+    if (player == 1) {
+        //var tileid = '#2T' + tileNr;
+        var enemy = 2;
+    } else {
+        //var tileid = '#1T' + tileNr;
+        var enemy = 1;
+    }
+
+    console.log("hit: ", hit);
+
+    if (hit != -1) {
+        //trafiony
+        $('#' + enemy + 'T' + tileNr).addClass('tile-ship-destroy');
+        $('#' + enemy + 'T' + tileNr).removeClass('tile');
+        $('#' + enemy + 'T' + tileNr).addClass('tile-shot');
+        $('#' + enemy + 'T' + tileNr).removeClass('tile-ship');
+        console.log("FIND AT: ", tileNr, '#' + enemy + 'T' + tileNr);
+    } else {
+        //missed
+        $('#' + enemy + 'T' + tileNr).addClass('tile-shot');
+        $('#' + enemy + 'T' + tileNr).removeClass('tile');
     }
 }
 
@@ -456,7 +527,8 @@ function setShots(player) {
             playerToUpdate = 1;
         }
 
-        $('#' + playerToUpdate + 'T' + value).css('background-color', 'black');
+        $('#' + playerToUpdate + 'T' + value).addClass('tile-shot');
+        $('#' + playerToUpdate + 'T' + value).removeClass('tile');
     })
 
     $.each(theirShots, function(index, value) {

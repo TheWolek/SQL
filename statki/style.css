@@ -43,13 +43,29 @@ h1 {
     border: 2px solid #414141;
 }
 
+.tile-shot {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-color: #bdbdbd;
+    border: 2px solid #414141;
+}
+
+.tile-ship-destroy {
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-color: #d30000;
+    border: 2px solid #550000;
+}
+
 .tile {
     display: inline-block;
     width: 32px;
     height: 32px;
     background-color: #1273e5;
     border: 2px solid #0b468b;
-    filter: brightness(75%); 
+    filter: brightness(75%);
     transition: all .2s ease-in-out;
 }
 
@@ -57,7 +73,6 @@ h1 {
     border: 2px solid #37d9e6;
     filter: brightness(100%);
 }
-
 
 .container {
     width: 80%;
