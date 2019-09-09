@@ -49,6 +49,13 @@ h1 {
     height: 32px;
     background-color: #1273e5;
     border: 2px solid #0b468b;
+    filter: brightness(75%); 
+    transition: all .2s ease-in-out;
+}
+
+.tile:hover {
+    border: 2px solid #37d9e6;
+    filter: brightness(100%);
 }
 
 
