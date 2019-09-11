@@ -3,6 +3,8 @@ body {
     background-color: #333;
     color: #e0e0e0;
     height: 100%;
+    margin: 0;
+    padding: 0;
 }
 
 header {
@@ -32,6 +34,8 @@ h1 {
     margin-right: auto;
     display: flex;
     flex-wrap: wrap;
+    box-shadow: 10px 10px 16px -4px rgba(0, 0, 0, 0.66);
+    transition: all 0.3s ease-in-out;
 }
 
 .tile-ship {
@@ -74,12 +78,17 @@ h1 {
 }
 
 .container {
-    width: 80%;
     display: flex;
     justify-content: space-around;
     align-content: center;
-    margin-left: auto;
-    margin-right: auto;
+    width: 70%;
+}
+
+.cont {
+    display: flex;
+    justify-content: center;
+    background-color: #444;
+    padding: 10px 0 50px 0;
 }
 
 .boardCover {
@@ -98,6 +107,7 @@ button {
     font-family: 'Roboto Mono', monospace;
     filter: brightness(70%);
     transition: all .3s ease-in-out;
+    box-shadow: 10px 10px 16px -4px rgba(0, 0, 0, 0.66);
 }
 
 button:hover {

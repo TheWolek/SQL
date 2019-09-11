@@ -16,7 +16,7 @@ $('#player2').html(toinsert2);
 
 //przycisk zmiany rundy
 $('#btn').on('click', function() { changePlayer(curplayer); });
-$('.footer').html("Paweł Michalski 4K");
+$('.footer').html("Paweł Michalski 4K TZN");
 
 //klianie w pola
 tiles--;
@@ -27,7 +27,7 @@ while (tiles >= 0) {
     addHandler(tiles, 1, 2); //nr kafelka, tryb, target
     tiles--;
 }
-//............................................ NIE MAM SLOW
+
 function addHandler(tile, mode, player) {
     if (mode == 1) {
         //dodwanie
@@ -196,6 +196,9 @@ var gameover = false;
 //init statkow dla I gracza
 showShips(curplayer);
 
+$('#player1').css('filter', 'brightness(90%)');
+$('#player2').css('filter', 'brightness(80%)');
+
 //dodawanie statkow p1
 for (n = 0; n <= 9; n++) {
     var s_1;
@@ -279,24 +282,34 @@ function changePlayer(player) {
         notifi = "Teraz ruch gracza II";
         hideShips(curplayer);
         curplayer = 2; //zmiana gracza
-        while (tiles <= 99) {
-            addHandler(tiles, 0, 2); //remove our events
-            addHandler(tiles, 1, 1); //add theri events
-            tiles++;
-        }
-        showShips(curplayer);
-        setShots(curplayer);
+        $('#player1').css('filter', 'brightness(80%)');
+        setTimeout(function() {
+            $('#player2').css('filter', 'brightness(90%)');
+            while (tiles <= 99) {
+                addHandler(tiles, 0, 2); //remove our events
+                addHandler(tiles, 1, 1); //add theri events
+                tiles++;
+            }
+            showShips(curplayer);
+            setShots(curplayer);
+        }, 1000);
+
     } else {
         notifi = "Teraz ruch gracza I";
         hideShips(curplayer);
         curplayer = 1; //zmiana gracza
-        while (tiles <= 99) {
-            addHandler(tiles, 0, 1); //remove our events
-            addHandler(tiles, 1, 2); //add theri events
-            tiles++;
-        }
-        showShips(curplayer);
-        setShots(curplayer);
+        $('#player2').css('filter', 'brightness(80%)');
+        setTimeout(function() {
+            $('#player1').css('filter', 'brightness(90%)');
+            while (tiles <= 99) {
+                addHandler(tiles, 0, 1); //remove our events
+                addHandler(tiles, 1, 2); //add theri events
+                tiles++;
+            }
+            showShips(curplayer);
+            setShots(curplayer);
+        }, 1000);
+
     }
     shotDone = false;
     $('.notifi').html(notifi);
