@@ -192,6 +192,7 @@ var shotDone = false;
 var p1Score = 0;
 var p2Score = 0;
 var gameover = false;
+var boardReady = true;
 
 //init statkow dla I gracza
 showShips(curplayer);
@@ -282,9 +283,10 @@ function changePlayer(player) {
         notifi = "Teraz ruch gracza II";
         hideShips(curplayer);
         curplayer = 2; //zmiana gracza
-        $('#player1').css('filter', 'brightness(80%)');
+        $('.board').css('filter', 'grayscale(1)');
+        boardReady = false;
         setTimeout(function() {
-            $('#player2').css('filter', 'brightness(90%)');
+            $('.board').css('filter', 'grayscale(0)');
             while (tiles <= 99) {
                 addHandler(tiles, 0, 2); //remove our events
                 addHandler(tiles, 1, 1); //add theri events
@@ -292,15 +294,17 @@ function changePlayer(player) {
             }
             showShips(curplayer);
             setShots(curplayer);
-        }, 1000);
+            boardReady = true;
+        }, 2000);
 
     } else {
         notifi = "Teraz ruch gracza I";
         hideShips(curplayer);
         curplayer = 1; //zmiana gracza
-        $('#player2').css('filter', 'brightness(80%)');
+        $('.board').css('filter', 'grayscale(1)');
+        boardReady = false;
         setTimeout(function() {
-            $('#player1').css('filter', 'brightness(90%)');
+            $('.board').css('filter', 'grayscale(0)');
             while (tiles <= 99) {
                 addHandler(tiles, 0, 1); //remove our events
                 addHandler(tiles, 1, 2); //add theri events
@@ -308,7 +312,8 @@ function changePlayer(player) {
             }
             showShips(curplayer);
             setShots(curplayer);
-        }, 1000);
+            boardReady = true;
+        }, 2000);
 
     }
     shotDone = false;
@@ -392,7 +397,7 @@ function setShip(ship, player, ship_nr) {
 
 //dodawanie strzalu
 function shot(player, tile) {
-    if (!shotDone && !gameover) {
+    if (!shotDone && !gameover && boardReady) {
         if (player == 1) {
             //var tileid = '#2T' + tile;
             var ships = p2Ships;
@@ -411,7 +416,7 @@ function shot(player, tile) {
             setColor(player, tile, check);
             if (check != -1) {
                 p1Score++;
-                console.log("p1 PLUS 1", p1Score);
+                console.log("p1 PLUS 1, p1score: ", p1Score);
                 if (p1Score >= 20) {
                     win(player);
                 }
@@ -422,7 +427,7 @@ function shot(player, tile) {
             setColor(player, tile, check);
             if (check != -1) {
                 p2Score++;
-                console.log("p2 PLUS 1", p2Score)
+                console.log("p2 PLUS 1, p2score: ", p2Score)
                 if (p2Score >= 20) {
                     win(player);
                 }
@@ -449,11 +454,13 @@ function setColor(player, tileNr, hit) {
         $('#' + enemy + 'T' + tileNr).removeClass('tile');
         $('#' + enemy + 'T' + tileNr).addClass('tile-shot');
         $('#' + enemy + 'T' + tileNr).removeClass('tile-ship');
+        //addHandler(tileNr,0,enemy);
         console.log("FIND AT: ", tileNr, '#' + enemy + 'T' + tileNr);
     } else {
         //missed
         $('#' + enemy + 'T' + tileNr).addClass('tile-shot');
         $('#' + enemy + 'T' + tileNr).removeClass('tile');
+        //addHandler(tileNr,0,enemy);
     }
 }
 
@@ -481,11 +488,13 @@ function setShots(player) {
 
         $('#' + playerToUpdate + 'T' + value).addClass('tile-shot');
         $('#' + playerToUpdate + 'T' + value).removeClass('tile');
+        addHandler(value,0,playerToUpdate);
     })
 
     $.each(theirShots, function(index, value) {
         console.log("ich strzaly: " + value);
         $('#' + player + 'T' + value).css('background-color', 'black');
+        addHandler(value,0,player);
     })
 }
 
