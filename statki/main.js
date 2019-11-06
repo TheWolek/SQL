@@ -23,7 +23,6 @@ tiles--;
 //console.log("test: ",tiles);
 
 while (tiles >= 0) {
-    //console.log("kurwa mac: ", tiles);
     addHandler(tiles, 1, 2); //nr kafelka, tryb, target
     tiles--;
 }
@@ -174,10 +173,6 @@ var layouts = [
     ]
 ];
 var n; //licznik do ilosci statkow
-var p1startFresh = true; //nowa gra gracz I
-var p2startFresh = true; //nowa gra gracz II
-var start; //poczatek statku
-var stop; //koniec statku
 var layoutnumber_p1 = getrandomlayout(0, layouts.length - 1); //wybor planszy p1
 var layoutnumber_p2 = getrandomlayout(0, layouts.length - 1); //wybor planszy p2
 console.log("layout number p1: " + layoutnumber_p1);
