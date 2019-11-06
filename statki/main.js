@@ -80,7 +80,7 @@ function getrandomlayout(min, max) {
 }
 
 //game vars
-var layouts = [
+const layouts = [
     [
         [31],
         [71],
@@ -272,7 +272,7 @@ console.log("p2Ships:", p2Ships);
 
 //zmiana gracza
 function changePlayer(player) {
-    var notifi;
+    let notifi;
     tiles = 0;
     if (player == 1) {
         notifi = "Teraz ruch gracza II";
@@ -321,7 +321,7 @@ function showShips(player) {
     var p1ships_local2 = [];
     var p2ships_local2 = [];
     */
-    var shipToShow = [];
+    let shipToShow = [];
     if (player == 1) {
         number = layoutnumber_p1;
         //p1Ships.push(layouts[number]);
@@ -367,9 +367,9 @@ function showShips(player) {
 
 //ukrywanie statkow
 function hideShips(player) {
-    var shipToHide = [];
-    var p1ships_local = [];
-    var p2ships_local = [];
+    let shipToHide = [];
+    let p1ships_local = [];
+    let p2ships_local = [];
     if (player == 1) {
         number = layoutnumber_p1;
     } else {
@@ -395,12 +395,12 @@ function shot(player, tile) {
     if (!shotDone && !gameover && boardReady) {
         if (player == 1) {
             //var tileid = '#2T' + tile;
-            var ships = p2Ships;
+            //var ships = p2Ships;
             p1Shots.push(tile);
             //alert(tile);
         } else {
             //var tileid = '#1T' + tile;
-            var ships = p1Ships;
+            //var ships = p1Ships;
             p2Shots.push(tile);
             //alert(tile);
         }
@@ -461,7 +461,7 @@ function setColor(player, tileNr, hit) {
 
 //setShots
 function setShots(player) {
-    var playerToUpdate;
+    let playerToUpdate;
     if (player == 1) {
         var ourShots = p1Shots;
         var theirShots = p2Shots;
