@@ -7,6 +7,21 @@
     <title>Document</title>
 </head>
 <body>
-    
+    <img src="" alt="1" id="img" onmouseover="stop()"/>
+    <script>
+        let inter = setInterval(change,1000)
+        function change() {
+            img = document.getElementById('img');
+            if(img.alt == '3')
+                img.alt = '1'
+            else 
+                img.alt = parseInt(img.alt) + 1; 
+        }
+
+        function stop() {
+            clearInterval(inter);
+        }
+            
+    </script>
 </body>
 </html>

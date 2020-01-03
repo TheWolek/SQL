@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" id="num1"/>
+        <input type="text" id="num2"/>
+        <input type="text" id="num3"/>
+        <input type="button" onclick="oblicz()" value="oblicz"/> 
+    </form>
+    
+    <div id="result"></div>
+    <script>
+        function oblicz() {
+            let num1 = document.getElementById('num1').value;
+            let num2 = document.getElementById('num2').value;
+            let num3 = document.getElementById('num3').value;
+
+            if(isNaN(num1) || isNaN(num2) || isNaN(num3) || num1=='' || num2=='' || num3=='') {
+                alert("wpisz poprawne dane");
+            } else {
+                let output;
+                if(num1 > num2 && num1 > num3) {
+                    output = num1;
+                } else if(num2 > num3) {
+                    output = num2;
+                } else {
+                    output = num3
+                }
+                document.getElementById('result').innerHTML = output;
+            }
+        }
+        
+    </script>
+</body>
+</html>

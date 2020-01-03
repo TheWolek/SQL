@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form>
+        <input type="text" id="num"/>
+        <br/>
+        <input type="checkbox" id="check"/>
+        <br/>
+        <input type="button" value="licz" onclick="licz()"/> 
+    </form>
+    <div id="result"></div>
+    <script>
+        function licz() {
+            let num = document.getElementById('num').value;
+            let checkbox = document.getElementById('check').checked;
+            let output
+
+            if(checkbox) {
+                output = 'Dowieziemy za darmo';
+            } else {
+                output = parseInt(num) * 2;
+                output = 'Dowoz bedzie cie kosztowal ' + output + ' zlotych'; 
+            }
+            document.getElementById('result').innerHTML = output;
+        }
+    </script>
+</body>
+</html>
